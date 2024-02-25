@@ -1,8 +1,7 @@
 # FileLink
 
-- FileLink is a encrypted file sharing website built in **Expressjs**.
-- In FileLink, when you upload a file it generates a link.
-- You can share this link with anybody to share your file.
+- FileLink is a secure encrypted file sharing website built in expressjs.
+- With FileLink, users can upload files, assign passwords for added security, and generate shareable links to effortlessly distribute files to recipients.
 
 ## Technologies used
 
