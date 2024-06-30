@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const fs = require("fs");
 const File = require("../models/file");
 
 // render homepage
@@ -18,6 +19,20 @@ module.exports.upload = async (req, res) => {
   }
 
   const file = await File.create(fileData);
+
+  // delete file after 10 minutes interval
+  setTimeout(async () => {
+    // delete file from uploads/ folder
+    await fs.unlink(file.path, (err) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+    });
+    // delete file from db
+    await File.deleteOne({ _id: file._id });
+    console.log(`File ${file.originalName} deleted.`);
+  }, 10 * 60 * 1000);
 
   return res.render("home", {
     fileName: file.originalName,
