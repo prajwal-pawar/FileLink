@@ -8,4 +8,9 @@ router.get("/", homeController.home);
 
 router.post("/upload", upload.single("file"), homeController.upload);
 
+router
+  .route("/file/:id")
+  .get(homeController.download)
+  .post(homeController.download);
+
 module.exports = router;

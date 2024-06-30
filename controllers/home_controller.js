@@ -24,3 +24,30 @@ module.exports.upload = async (req, res) => {
     fileLink: `${req.headers.origin}/file/${file.id}`,
   });
 };
+
+// file download
+module.exports.download = async (req, res) => {
+  const file = await File.findById(req.params.id);
+
+  if (file.password != null) {
+    if (req.body.password == null) {
+      res.render("password", {
+        filename: file.originalName,
+      });
+      return;
+    }
+
+    const password = await bcrypt.compareSync(req.body.password, file.password);
+
+    if (!password) {
+      return res.render("password", {
+        error: true,
+      });
+    }
+  }
+
+  file.downloadCount++;
+  await file.save();
+
+  return res.download(file.path, file.originalName);
+};
